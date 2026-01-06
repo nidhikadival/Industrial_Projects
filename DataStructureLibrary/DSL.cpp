@@ -1,0 +1,1577 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      Generalized Data Structure Library
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+----------------------------------------------------------------------------------------------------------------
+    Type                Name of class for node          Name of class for Functionality         Status
+----------------------------------------------------------------------------------------------------------------        
+    Singly Linear       SinglyLLLnode                   SinglyLLL                               Done
+    Singly Circular     SinglyCLLnode                   SinglyCLL                               Done
+    Doubly Linear       DoublyLLLnode                   DoublyLLL                               Done
+    Doubly Circular     DoublyCLLnode                   DoublyCLL                               Done
+----------------------------------------------------------------------------------------------------------------      
+*/
+
+#include<iostream>
+using namespace std;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//              Singly Linear LL using Generic Approach
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma pack(1)
+template <class T>
+class SinglyLLLnode
+{
+    public:
+        T data;
+        SinglyLLLnode<T> * next;
+
+        SinglyLLLnode(T no)
+        {
+            this->data = no;
+            this->next = NULL;
+        }
+};
+
+template <class T>
+class SinglyLLL
+{
+    private:
+        SinglyLLLnode<T> * first;
+        int iCount;
+
+    public:
+        SinglyLLL();
+        void InsertFirst(T);       
+        void InsertLast(T);
+        void DeleteFirst();
+        void DeleteLast();
+        void Display();
+        int Count();
+        void InsertAtPos(T,int);
+        void DeleteAtPos(int);
+};
+
+template <class T>
+SinglyLLL<T> :: SinglyLLL()
+{
+    cout<<"Object of SinglyLLL gets created.\n";
+    this->first = NULL;
+    this->iCount = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertFirst
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               06/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: InsertFirst(T no)        
+{
+    SinglyLLLnode<T> * newn = NULL;
+    newn = new SinglyLLLnode<T>(no);
+
+    newn->next = this->first;     
+    this->first = newn;
+
+    this->iCount++;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertLast
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: InsertLast(T no)
+{
+    SinglyLLLnode<T> * newn = NULL;
+    newn = new SinglyLLLnode<T>(no);
+
+    SinglyLLLnode<T> * temp = NULL;
+
+    if(this->iCount == 0)     
+    {
+        this->first = newn;
+    }
+    else
+    {
+        temp = this->first;
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newn;
+    } 
+    this->iCount++;       
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteFirst
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: DeleteFirst()
+{
+    SinglyLLLnode<T> * temp = NULL;
+
+    if(this->first == NULL)
+    {
+        return;
+    }
+    else if(this->first->next == NULL)        
+    {
+        delete this->first;
+        this->first = NULL;
+    }
+    else
+    {
+        temp = this->first;
+        this->first = this->first->next;
+        delete temp;
+    }
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteLast
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: DeleteLast()
+{
+    SinglyLLLnode<T> * temp = NULL;
+
+    if(this->first == NULL)
+    {
+        return;
+    }
+    else if(this->first->next == NULL)        
+    {
+        delete this->first;
+        this->first = NULL;
+    }
+    else
+    {
+        temp = this->first;
+
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        delete temp->next;
+        temp->next = NULL;
+    }
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Display
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to display all elements of the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: Display()
+{
+    SinglyLLLnode<T> * temp = NULL;
+    int iCnt = 0;
+
+    temp = this->first;
+
+    for(iCnt=1; iCnt<=this->iCount; iCnt++)   
+    {
+        cout<<"| "<<temp->data<<" |->";
+        temp = temp->next;
+    }
+    cout<<"NULL\n";
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Count
+//  Input:              Nothing
+//  Output:             int 
+//  Description:        Used to get the no of elements in the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+int SinglyLLL<T> :: Count()
+{
+    return this->iCount;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertAtPos
+//  Input:              Data of node and int Position
+//  Output:             Nothing 
+//  Description:        Used to insert node at any given position by user
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: InsertAtPos(T no, int pos)
+{
+    SinglyLLLnode<T> * temp = NULL;
+    SinglyLLLnode<T> * newn = NULL;
+
+    int iCnt = 0;
+
+    if((pos < 1)||(pos > this->iCount+1))
+    {
+        cout<<"Invalid position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        this->InsertFirst(no);
+    }
+    else if(pos == this->iCount+1)
+    {
+        this->InsertLast(no);
+    }
+    else
+    {
+        newn = new SinglyLLLnode<T>(no);
+
+        temp = this->first;
+
+        for(iCnt = 1; iCnt<pos-1; iCnt++)
+        {
+            temp = temp->next;
+        }
+        newn->next = temp->next;
+        temp->next = newn;
+
+        this->iCount++;
+    }
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteAtPos
+//  Input:              int Position 
+//  Output:             Nothing 
+//  Description:        Used to delete node from given position
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyLLL<T> :: DeleteAtPos(int pos)
+{
+    SinglyLLLnode<T> * temp = NULL;
+    SinglyLLLnode<T> * target = NULL;
+
+    if((pos<1)||(pos>this->iCount))
+    {
+        cout<<"Invalid position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        this->DeleteFirst();
+    }
+    else if(pos == this->iCount)
+    {
+        this->DeleteLast();
+    }
+    else
+    {
+        int iCnt = 0;
+        temp = this->first;
+
+        for(iCnt = 1; iCnt<pos-1; iCnt++)
+        {   
+            temp = temp->next;
+        }
+        target = temp->next;
+
+        temp->next = target->next;
+        delete target;
+
+        this->iCount--;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//              Singly Circular LL using Generic Approach
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma pack(1)
+template <class T>
+class SinglyCLLnode 
+{
+    public:
+        T data;
+        SinglyCLLnode<T> * next;
+
+        SinglyCLLnode<T>(T no)
+        {
+            this->data = no;
+            this->next = NULL;
+        }
+};
+
+template <class T>
+class SinglyCLL
+{
+    private:
+        SinglyCLLnode<T> * first;
+        SinglyCLLnode<T> * last;
+        int iCount;
+
+    public:
+        SinglyCLL();
+        void InsertFirst(T);
+        void InsertLast(T);
+        void DeleteFirst();
+        void DeleteLast();
+        void Display();
+        int Count();
+        void InsertAtPos(T, int);
+        void DeleteAtPos(int);
+};
+
+template <class T>
+SinglyCLL<T> :: SinglyCLL()
+{
+    cout<<"Object of SinglyCLL gets created.\n";
+
+    this->first = NULL;
+    this->last = NULL;
+    this->iCount = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertFirst
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: InsertFirst(T no)
+{
+    SinglyCLLnode<T> * newn = NULL;
+
+    newn = new SinglyCLLnode<T>(no);
+
+    newn->data = no;
+    newn->next = NULL;
+
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        this->first = newn;
+        this->last = newn;
+    }
+    else
+    {
+        newn->next = this->first;
+        this->first = newn;
+    }
+    this->last->next = this->first;
+    this->iCount++;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertLast
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: InsertLast(T no)
+{
+    struct SinglyCLLnode<T> * newn = NULL;
+
+    newn = new SinglyCLLnode<T>(no);
+
+    newn->data = no;
+    newn->next = NULL;
+
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        this->first = newn;
+        this->last = newn;
+    }
+    else
+    {
+        this->last->next = newn;
+        this->last = newn;
+    }
+    this->last->next = this->first;
+    this->iCount++;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteFirst
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: DeleteFirst()
+{
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        return;
+    }
+    else if(this->first == this->last)
+    {
+        delete first;
+        this->first = NULL;
+        this->last = NULL;
+    }
+    else
+    {
+        this->first = this->first->next;
+        delete this->last->next;
+        this->last->next = NULL;
+    }
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteLast
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: DeleteLast()
+{
+    SinglyCLLnode<T> * temp = NULL;
+
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        return;
+    }
+    else if(this->first == this->last)
+    {
+        delete first;
+        this->first = NULL;
+        this->last = NULL;
+    }
+    else
+    {
+        temp = this->first;
+
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        delete temp->next;
+        this->last = temp;
+    }
+    this->last->next = this->first;
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Display
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to display all elements of the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: Display()
+{
+    SinglyCLLnode<T> * temp = NULL;
+
+    temp = this->first;
+
+    do
+    {
+        cout<<" | "<<temp->data<<" | ->";
+        temp = temp->next;
+    }
+    while(temp != this->last->next);
+    cout<<"NULL\n";
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Count
+//  Input:              Nothing
+//  Output:             int 
+//  Description:        Used to get the no of elements in the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+int SinglyCLL<T> :: Count()
+{
+    return this->iCount;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertAtPos
+//  Input:              Data of node and int Position
+//  Output:             Nothing 
+//  Description:        Used to insert node at any given position by user
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void SinglyCLL<T> :: InsertAtPos(T no, int pos)
+{
+    SinglyCLLnode<T> * temp = NULL;
+    int iCnt = 0;
+
+    if((pos<1) || (pos>this->iCount+1))
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        InsertFirst(no);
+    }
+    else if(pos == this->iCount+1)
+    {
+        InsertLast(no);
+    }
+    else
+    {
+        SinglyCLLnode<T> * newn = NULL;
+
+        newn = new SinglyCLLnode<T>(no);
+
+        newn->data = no;
+        newn->next = NULL;
+
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1; iCnt++)
+        {
+            temp = temp->next;
+        }
+        newn->next = temp->next;
+        temp->next = newn;
+
+        this->iCount++;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteAtPos
+//  Input:              int Position 
+//  Output:             Nothing 
+//  Description:        Used to delete node from given position
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template <class T>
+void SinglyCLL<T> :: DeleteAtPos(int pos)
+{
+    SinglyCLLnode<T> * temp = NULL;
+    SinglyCLLnode<T> * target = NULL;
+    int iCnt = 0;
+
+    if((pos<1) || (pos>this->iCount))
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        DeleteFirst();
+    }
+    else if(pos == this->iCount)
+    {
+        DeleteLast();
+    }
+    else
+    {
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1; iCnt++)
+        {
+            temp = temp->next;
+        }
+        target = temp->next;
+
+        temp->next = target->next;
+        delete target;
+
+        this->iCount--;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//              Doubly Linear LL using Generic Approach
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma pack(1)
+template <class T>
+class DoublyLLLnode
+{
+    public:
+        T data;
+        DoublyLLLnode * next;
+        DoublyLLLnode * prev;
+
+        DoublyLLLnode(T no)
+        {
+            this->data = no;
+            this->next = NULL;
+            this->prev = NULL;
+        }
+};
+
+template <class T>
+class DoublyLLL
+{
+    private:
+        DoublyLLLnode<T> * first;
+        int iCount;
+
+    public:
+        DoublyLLL();
+        void InsertFirst(T);
+        void InsertLast(T);
+        void DeleteFirst();
+        void DeleteLast();
+        void Display();
+        int Count();
+        void InsertAtPos(T,int);
+        void DeleteAtPos(int);
+};
+
+template <class T>
+DoublyLLL<T> :: DoublyLLL()
+{
+    cout<<"Object of DoublyLL gets created\n";
+    this->first = NULL;
+    this->iCount = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertFirst
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               06/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: InsertFirst(T no)
+{
+    DoublyLLLnode<T> * newn = NULL;
+
+    newn = new DoublyLLLnode<T>(no);
+
+    if(this->first == NULL)
+    {
+        this->first = newn;
+    }
+    else
+    {
+        newn->next = this->first;
+        this->first->prev = newn;
+        this->first = newn;
+    }
+    this->iCount++;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertLast
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: InsertLast(T no)
+{
+    DoublyLLLnode<T> * newn = NULL;
+    DoublyLLLnode<T> * temp = NULL;
+
+    newn = new DoublyLLLnode<T>(no);
+
+    if(this->first == NULL)
+    {
+        this->first = newn;
+    }
+    else
+    {
+        temp = this->first;
+
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newn;
+        newn->prev = temp;
+    }
+    this->iCount++;
+}
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteFirst
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: DeleteFirst()
+{
+    if(this->first == NULL)     
+    {
+        return;
+    }
+    else if(this->first->next == NULL)     
+    {
+        delete this->first;
+        this->first = NULL;
+    }
+    else                                
+    {
+        this->first = this->first->next;
+        delete this->first->prev;
+        this->first->prev = NULL;
+    }
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteLast
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: DeleteLast()
+{
+    DoublyLLLnode<T> * temp = NULL;
+
+    if(this->first == NULL)     
+    {
+        return;
+    }
+    else if(this->first->next == NULL)     
+    {
+        delete this->first;
+        this->first = NULL;
+    }
+    else                                
+    {
+        temp = this->first;
+
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        delete temp->next;
+        temp->next = NULL;
+    }
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Display
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to display all elements of the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: Display()
+{
+    DoublyLLLnode<T> * temp = NULL;
+
+    temp = this->first;
+
+    cout<<"\nNULL <=>";
+    while(temp != NULL)
+    {
+        cout<<" | "<<temp->data<<" | <=> ";
+        temp = temp->next;
+    }
+    cout<<"NULL\n";   
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Count
+//  Input:              Nothing
+//  Output:             int 
+//  Description:        Used to get the no of elements in the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+int DoublyLLL<T> :: Count()
+{
+    return this->iCount;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertAtPos
+//  Input:              Data of node and int Position
+//  Output:             Nothing 
+//  Description:        Used to insert node at any given position by user
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyLLL<T> :: InsertAtPos(T no, int pos)
+{
+    DoublyLLLnode<T> * temp = NULL;
+    DoublyLLLnode<T> * newn = NULL;
+
+    int iCnt = 0;
+
+    if((pos<1) || (pos>this->iCount+1) )
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        this->InsertFirst(no);
+    }
+    else if(pos == this->iCount+1)
+    {
+        this->InsertLast(no);
+    }
+    else
+    {
+        newn = new DoublyLLLnode<T>(no);
+
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1;iCnt++)
+        {
+            temp = temp->next;
+        }
+
+        newn->next = temp->next;
+        temp->next->prev = newn;
+
+        temp->next = newn;
+        newn->prev = temp;
+
+        this->iCount++;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteAtPos
+//  Input:              int Position 
+//  Output:             Nothing 
+//  Description:        Used to delete node from given position
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template <class T>
+void DoublyLLL<T> :: DeleteAtPos(int pos)
+{
+    DoublyLLLnode<T> * temp = NULL;
+
+    int iCnt = 0;
+
+    if((pos<1) || (pos>this->iCount) )
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        this->DeleteFirst();
+    }
+    else if(pos == this->iCount)
+    {
+        this->DeleteLast();
+    }
+    else
+    {
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1;iCnt++)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = temp->next->next;
+
+        delete temp->next->prev;
+
+        temp->next->prev = temp;
+
+        this->iCount--;
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//              Doubly Circular LL using Generic Approach
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma pack(1)
+template <class T>
+class DoublyCLLnode
+{
+    public:
+        T data;
+        DoublyCLLnode<T> * next;
+        DoublyCLLnode<T> * prev;
+
+        DoublyCLLnode<T>(T no)
+        {
+            this->data = no;
+            this->next = NULL;
+            this->prev = NULL;
+        }
+};
+
+template <class T>
+class DoublyCLL
+{
+    private:
+        DoublyCLLnode<T> * first;
+        DoublyCLLnode<T> * last;
+        int iCount;
+
+    public:
+        DoublyCLL();
+        void InsertFirst(T); 
+        void InsertLast(T); 
+        void DeleteFirst(); 
+        void DeleteLast();
+        void Display();
+        int Count();
+        void InsertAtPos(T,int);
+        void DeleteAtPos(int); 
+};            
+
+template <class T>
+DoublyCLL<T> :: DoublyCLL()
+{
+    cout<<"Object of DoublyCLL gets created.\n";
+
+    this->first = NULL;
+    this->last = NULL;
+    this->iCount = 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertFirst
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               06/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: InsertFirst(T no)
+{
+    DoublyCLLnode<T>  *  newn = NULL;
+
+    newn = new DoublyCLLnode<T>(no);
+
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        this->first = newn;
+        this->last = newn;
+    }
+    else
+    {
+        newn->next = this->first;
+        this->first->prev = newn;
+        this->first = newn;
+    }
+
+    this->last->next = this->first;
+    this->first->prev = this->last;
+
+    this->iCount++;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertLast
+//  Input:              Data of node
+//  Output:             Nothing
+//  Description:        Used to insert node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: InsertLast(T no)
+{
+    DoublyCLLnode<T> *  newn = NULL;
+
+    newn = new DoublyCLLnode<T>(no);
+
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        this->first = newn;
+        this->last = newn;
+    }
+    else
+    {
+        this->last->next = newn;
+        newn->prev = this->last;
+        this->last = newn;
+    }
+
+    this->last->next = this->first;
+    this->first->prev = this->last; 
+    
+    this->iCount++;
+    
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteFirst
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at first position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: DeleteFirst()
+{
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        return;
+    }
+    else if(this->first == this->last)
+    {
+        delete this->first;
+        this->first = NULL;
+        this->last = NULL;
+    }
+    else
+    {
+        this->first = this->first->next;
+        delete this->first->prev;
+    }
+
+    this->last->next = this->first;
+    this->first->prev = this->last; 
+    
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteLast
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to delete node at last position 
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: DeleteLast()
+{
+    if((this->first == NULL) && (this->last == NULL))
+    {
+        return;
+    }
+    else if(this->first == this->last)
+    {
+        delete this->first;
+        this->first = NULL;
+        this->last = NULL;
+    }
+    else
+    {
+        this->last = this->last->prev;
+        delete this->last->next;
+    }
+
+    this->last->next = this->first;
+    this->first->prev = this->last; 
+    
+    this->iCount--;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Display
+//  Input:              Nothing
+//  Output:             Nothing
+//  Description:        Used to display all elements of the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: Display()
+{
+    DoublyCLLnode<T> *  temp = NULL;
+
+    temp = this->first;
+
+    cout<<"NULL <=> ";
+    do
+    {
+        cout<<"| "<<temp->data<<" | <=> ";
+        temp = temp->next;
+    }
+    while(temp != this->last->next);
+
+    cout<<"NULL\n";
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      Count
+//  Input:              Nothing
+//  Output:             int 
+//  Description:        Used to get the no of elements in the linked list
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+int DoublyCLL<T> :: Count()
+{
+    return iCount;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      InsertAtPos
+//  Input:              Data of node and int Position
+//  Output:             Nothing 
+//  Description:        Used to insert node at any given position by user
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: InsertAtPos(T no, int pos)
+{
+    DoublyCLLnode<T> *  temp = NULL;
+    DoublyCLLnode<T> *  newn = NULL;
+
+    int iCnt = 0;
+
+    if((pos<1) || (pos>iCount+1))
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        InsertFirst(no);
+    }
+    else if(pos == iCount+1)
+    {
+        InsertLast(no);
+    }
+    else
+    {
+        newn = new DoublyCLLnode<T>(no);
+        
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1; iCnt++)
+        {
+            temp = temp->next;
+        }
+        newn->next = temp->next;
+        temp->next->prev = newn;
+
+        temp->next = newn;
+        newn->prev = temp;
+
+        this->iCount++;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Function Name:      DeleteAtPos
+//  Input:              int Position 
+//  Output:             Nothing 
+//  Description:        Used to delete node from given position
+//  Author:             Nidhi Girish Kadival
+//  Date:               07/01/2026
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+void DoublyCLL<T> :: DeleteAtPos(int pos)
+{
+    DoublyCLLnode<T> *  temp = NULL;
+
+    int iCnt = 0;
+
+    if((pos<1) || (pos>iCount))
+    {
+        cout<<"Invalid Position\n";
+        return;
+    }
+
+    if(pos == 1)
+    {
+        DeleteFirst();
+    }
+    else if(pos == iCount)
+    {
+        DeleteLast();
+    }
+    else
+    {
+        temp = this->first;
+
+        for(iCnt=1; iCnt<pos-1; iCnt++)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = temp->next->next;
+
+        delete temp->next->prev;
+        temp->next->prev = temp;
+
+        this->iCount--;
+
+    }
+
+}   
+
+/////////////////////////////////////////////////// End of Library   /////////////////////////////////////////////////
+
+int main()
+{
+    cout<<"------------------------------------ SINGLY LINEAR LL ------------------------------------\n";
+    SinglyLLL<int> * obj = new SinglyLLL<int>();
+    int iRet = 0;
+
+    obj->InsertFirst(51);
+    obj->InsertFirst(21);
+    obj->InsertFirst(11);
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+
+    obj->InsertLast(101);
+    obj->InsertLast(111);
+    obj->InsertLast(121);
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+
+    obj->DeleteFirst();
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+    
+    obj->DeleteLast();
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+
+    obj->InsertAtPos(105,4);
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+
+    obj->DeleteAtPos(4);
+
+    obj->Display();
+
+    iRet = obj->Count();
+    cout<<"Number of nodes are: "<<iRet<<"\n";
+
+    
+    delete obj;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout<<"------------------------------------ SINGLY CIRCULAR LL ------------------------------------\n";
+    SinglyCLL<float> *scobj = new SinglyCLL<float>();         
+
+    scobj->InsertFirst(12.12f);
+    scobj->InsertFirst(11.11f);
+    scobj->InsertFirst(10.10f);
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    scobj->InsertLast(13.13f);
+    scobj->InsertLast(14.14f);
+    scobj->InsertLast(15.15f);
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    scobj->DeleteFirst();
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    scobj->DeleteLast();
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    scobj->InsertAtPos(14.00f,4);
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    scobj->DeleteAtPos(4);
+
+    scobj->Display();
+
+    cout<<"Number of nodes are: "<<scobj->Count()<<"\n";
+
+    delete scobj;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout<<"------------------------------------ DOUBLY LINEAR LL ------------------------------------\n";
+    
+    DoublyLLL<char> *dobj = new DoublyLLL<char>();         
+
+    dobj->InsertFirst('A');
+    dobj->InsertFirst('B');
+    dobj->InsertFirst('C');
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    dobj->InsertLast('X');
+    dobj->InsertLast('Y');
+    dobj->InsertLast('Z');
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    dobj->DeleteFirst();
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    dobj->DeleteLast();
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    dobj->InsertAtPos('$',4);
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    dobj->DeleteAtPos(4);
+
+    dobj->Display();
+
+    cout<<"Number of nodes are: "<<dobj->Count()<<"\n";
+
+    delete dobj;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout<<"------------------------------------ DOUBLY CIRCULAR LL ------------------------------------\n";
+
+    DoublyCLL<double> *dcobj = new DoublyCLL<double>(); 
+
+    dcobj->InsertFirst(30.333);
+    dcobj->InsertFirst(20.222);
+    dcobj->InsertFirst(10.111);
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    dcobj->InsertLast(40.444);
+    dcobj->InsertLast(50.555);
+    dcobj->InsertLast(60.666);
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    dcobj->DeleteFirst();
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    dcobj->DeleteLast();
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    dcobj->InsertAtPos(121.999,4);
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    dcobj->DeleteAtPos(4);
+
+    dcobj->Display();
+
+    cout<<"Number of nodes are: "<<dcobj->Count()<<"\n";
+
+    delete dcobj;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    return 0;
+}
